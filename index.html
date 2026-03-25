@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KunzieBankz | Streamer Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Orbitron', 'sans-serif'],
+                        body: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        kick: '#53fc18',
+                        twitch: '#9146ff',
+                        dark: '#0a0a0a',
+                        panel: '#151515',
+                        ltc: '#bfbbbb',
+                        doge: '#c2a633',
+                        usdt: '#26a17b',
+                        eth: '#627eea',
+                        neonBlue: '#00d4ff',
+                        neonBlack: '#0a0a0f',
+                        gold: '#ffd700',
+                        pragmatic: '#ff6b00',
+                        hacksaw: '#ff0055',
+                        relax: '#00ff88',
+                        nolimit: '#ff00ff',
+                        push: '#00ccff'
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'flash': 'flash 0.5s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse-gold': 'pulse-gold 2s infinite',
+                    },
+                    keyframes: {
+                        flash: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.5' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #00d4ff, 0 0 10px #00d4ff, 0 0 15px #00d4ff' },
+                            '100%': { boxShadow: '0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff, 0 0 40px #0080ff' }
+                        },
+                        'pulse-gold': {
+                            '0%, 100%': { boxShadow: '0 0 5px #ffd700, 0 0 10px #ffd700' },
+                            '50%': { boxShadow: '0 0 20px #ffd700, 0 0 30px #ffaa00' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        .glass-panel {
+            background: rgba(21, 21, 21, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .neon-text-green {
+            text-shadow: 0 0 10px rgba(83, 252, 24, 0.5), 0 0 20px rgba(83, 252, 24, 0.3);
+        }
+        
+        .neon-text-purple {
+            text-shadow: 0 0 10px rgba(145, 70, 255, 0.5), 0 0 20px rgba(145, 70, 255, 0.3);
+        }
+
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 0 20px rgba(0, 212, 255, 0.5), 0 0 30px rgba(0, 128, 255, 0.3);
+        }
+
+        .neon-text-gold {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .glitch-effect {
+            position: relative;
+        }
+        
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+        }
+        
+        .glitch-effect::before {
+            left: 2px;
+            text-shadow: -1px 0 #00d4ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch-effect::after {
+            left: -2px;
+            text-shadow: -1px 0 #0080ff;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            20% { clip: rect(6px, 9999px, 14px, 0); }
+            40% { clip: rect(89px, 9999px, 53px, 0); }
+            60% { clip: rect(2px, 9999px, 14px, 0); }
+            80% { clip: rect(67px, 9999px, 78px, 0); }
+            100% { clip: rect(21px, 9999px, 53px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 99px, 0); }
+            20% { clip: rect(12px, 9999px, 33px, 0); }
+            40% { clip: rect(54px, 9999px, 2px, 0); }
+            60% { clip: rect(11px, 9999px, 76px, 0); }
+            80% { clip: rect(93px, 9999px, 13px, 0); }
+            100% { clip: rect(34px, 9999px, 66px, 0); }
+        }
+
+        .grid-cell {
+            transition: all 0.1s;
+        }
+        .grid-cell.active {
+            background-color: #53fc18;
+            box-shadow: 0 0 15px #53fc18;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .grid-cell.winner {
+            background-color: #9146ff;
+            box-shadow: 0 0 30px #9146ff;
+            animation: pulse-winner 0.5s infinite alternate;
+        }
+
+        @keyframes pulse-winner {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+
+        .hidden-section {
+            display: none;
+        }
+
+        .sound-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .minigame-input {
+            background: linear-gradient(135deg, rgba(145, 70, 255, 0.1) 0%, rgba(21, 21, 21, 0.9) 100%);
+            border: 1px solid rgba(145, 70, 255, 0.3);
+        }
+
+        .minigame-input:focus {
+            border-color: #9146ff;
+            box-shadow: 0 0 20px rgba(145, 70, 255, 0.2);
+        }
+
+        .crypto-card {
+            transition: all 0.3s ease;
+        }
+        .crypto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .social-link {
+            transition: all 0.3s ease;
+        }
+        .social-link:hover {
+            transform: scale(1.05);
+        }
+
+        .banned-user-item {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slot-machine-display {
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 3px solid #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 20px rgba(83, 252, 24, 0.2);
+        }
+
+        .copy-btn {
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .copy-btn.copied {
+            background-color: #53fc18;
+            color: black;
+        }
+
+        .logo-container {
+            position: relative;
+            background: linear-gradient(135deg, #0a0a0f 0%, #000000 50%, #0a0a1f 100%);
+            border: 2px solid #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5), inset 0 0 20px rgba(0, 212, 255, 0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .logo-text {
+            background: linear-gradient(180deg, #00d4ff 0%, #0080ff 50%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+        }
+
+        /* Bonus Hunt Styles */
+        .provider-badge {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .provider-pragmatic { background: rgba(255, 107, 0, 0.2); color: #ff6b00; border: 1px solid #ff6b00; }
+        .provider-hacksaw { background: rgba(255, 0, 85, 0.2); color: #ff0055; border: 1px solid #ff0055; }
+        .provider-relax { background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid #00ff88; }
+        .provider-nolimit { background: rgba(255, 0, 255, 0.2); color: #ff00ff; border: 1px solid #ff00ff; }
+        .provider-push { background: rgba(0, 204, 255, 0.2); color: #00ccff; border: 1px solid #00ccff; }
+        .provider-other { background: rgba(255, 255, 255, 0.1); color: #ccc; border: 1px solid #666; }
+
+        .bonus-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .bonus-card:hover {
+            transform: translateX(5px);
+            border-left-color: #ffd700;
+        }
+        .bonus-card.opened {
+            opacity: 0.6;
+            border-left-color: #00ff00;
+        }
+
+        .profit-positive { color: #00ff00; text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+        .profit-negative { color: #ff0000; text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+
+        .hunt-progress {
+            background: linear-gradient(90deg, #ffd700 0%, #ffaa00 100%);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-body min-h-screen flex flex-col">
+
+    <div id="audio-warning" class="fixed top-20 right-4 bg-yellow-600/90 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm font-bold animate-bounce hidden">
+        <i class="fas fa-volume-up mr-2"></i>Click anywhere to enable audio!
+    </div>
+
+    <button onclick="toggleMute()" id="mute-btn" class="sound-toggle glass-panel p-3 rounded-full hover:bg-white/10 transition-all border border-white/20">
+        <i id="mute-icon" class="fas fa-volume-up text-kick text-xl"></i>
+    </button>
+
+    <nav class="w-full glass-panel sticky top-0 z-50 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-4">
+                    <div class="logo-container w-12 h-12 rounded-lg flex items-center justify-center font-display font-black text-2xl transform hover:scale-105 transition-transform cursor-pointer">
+                        <span class="logo-text">KB</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-display font-bold tracking-wider text-white glitch-effect neon-text-blue" data-text="KUNZIEBANKZ">KUNZIEBANKZ</h1>
+                        <div class="flex gap-2 text-xs font-bold tracking-widest">
+                            <span class="text-neonBlue" style="color: #00d4ff;">KICK</span>
+                            <span class="text-gray-500">|</span>
+                            <span class="text-twitch">TWITCH</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-1">
+                    <button onclick="switchTab('dashboard')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-all border-l-2 border-neonBlue">DASHBOARD</button>
+                    <button onclick="switchTab('bonushunt')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"><i class="fas fa-gem mr-1 text-gold"></i>BONUS HUNT</button>
+                    <button onclick="switchTab('minigame')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">BATTLE GRID</button>
+                    <button onclick="switchTab('slotpicker')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all">SLOT PICKER</button>
+                    <button onclick="switchTab('support')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"><i class="fab fa-bitcoin mr-1"></i>MY CRYPTO</button>
+                    <button onclick="switchTab('banned')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-900/20 transition-all"><i class="fas fa-ban mr-1"></i>BANNED</button>                    <button onclick="switchTab('vip')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"><i class="fas fa-crown mr-1 text-indigo-400"></i>VIP</button>
+
+                </div>
+                <!-- Mobile menu -->
+                <div class="md:hidden flex items-center gap-2">
+                    <select onchange="switchTab(this.value)" class="bg-gray-800 text-white text-sm rounded px-3 py-2 border border-gray-700">
+                        <option value="dashboard">Dashboard</option>
+                        <option value="bonushunt">Bonus Hunt</option>
+                        <option value="minigame">Battle Grid</option>
+                        <option value="slotpicker">Slot Picker</option>
+                        <option value="support">My Crypto</option>
+                        <option value="banned">Banned</option                        <option value="vip">VIP Subscriptions</option>
+>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 py-8 relative">
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="space-y-8 animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-gold relative overflow-hidden group cursor-pointer" onclick="switchTab('bonushunt')">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-gem text-6xl text-gold"></i>
+                    </div>
+                    <h3 class="text-gray-400 text-sm font-bold uppercase tracking-wider">Bonus Hunt</h3>
+                    <div class="mt-2">
+                        <span class="text-2xl font-display font-bold text-white">Track Slots</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Pragmatic, Hacksaw & more</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-twitch relative overflow-hidden group cursor-pointer" onclick="switchTab('minigame')">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-th text-6xl text-twitch"></i>
+                    </div>
+                    <h3 class="text-gray-400 text-sm font-bold uppercase tracking-wider">Battle Grid</h3>
+                    <div class="mt-2">
+                        <span class="text-2xl font-display font-bold text-white">Visual Raffle</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Animated grid selection</p>
+                </div>
+
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-yellow-500 relative overflow-hidden group cursor-pointer" onclick="switchTab('slotpicker')">
+                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fas fa-dice text-6xl text-yellow-500"></i>
+                    </div>
+                    <h3 class="text-gray-400 text-sm font-bold uppercase tracking-wider">Slot Picker</h3>
+                    <div class="mt-2">
+                        <span class="text-2xl font-display font-bold text-white">Casino Style</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Rolling slot machine picker</p>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl p-8 text-center">
+                <h2 class="text-3xl font-display font-bold text-white mb-2">WELCOME BACK, <span class="text-neonBlue" style="color: #00d4ff;">KUNZIEBANKZ</span></h2>
+                <p class="text-gray-400 mb-8">Select a tool below to engage your community.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+                    <button onclick="switchTab('bonushunt')" class="group relative p-8 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-gold transition-all duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="fas fa-gem text-5xl text-gold mb-4 group-hover:scale-110 transition-transform duration-300 animate-pulse-gold"></i>
+                        <h3 class="text-xl font-bold text-white mb-2">Bonus Hunt</h3>
+                        <p class="text-sm text-gray-400">Track slot bonuses from Pragmatic, Hacksaw, and other providers.</p>
+                    </button>
+
+                    <button onclick="switchTab('minigame')" class="group relative p-8 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-twitch transition-all duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-twitch/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="fas fa-gamepad text-5xl text-twitch mb-4 group-hover:scale-110 transition-transform duration-300"></i>
+                        <h3 class="text-xl font-bold text-white mb-2">Battle Grid</h3>
+                        <p class="text-sm text-gray-400">Visualize the selection process with an animated grid battle.</p>
+                    </button>
+
+                    <button onclick="switchTab('slotpicker')" class="group relative p-8 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-yellow-500 transition-all duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="fas fa-dice text-5xl text-yellow-500 mb-4 group-hover:scale-110 transition-transform duration-300"></i>
+                        <h3 class="text-xl font-bold text-white mb-2">Slot Picker</h3>
+                        <p class="text-sm text-gray-400">Casino-style rolling name picker with slot machine animation.</p>
+                    </button>
+
+                    <button onclick="switchTab('support')" class="group relative p-8 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-green-500 transition-all duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="fab fa-bitcoin text-5xl text-green-500 mb-4 group-hover:scale-110 transition-transform duration-300"></i>
+                        <h3 class="text-xl font-bold text-white mb-2">My Crypto</h3>
+                        <p class="text-sm text-gray-400">Crypto wallet addresses and social media links.</p>
+                    </button>
+
+                    <button onclick="switchTab('banned')" class="group relative p-8 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-red-500 transition-all duration-300 overflow-hidden">
+                        <div class="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <i class="fas fa-ban text-5xl text-red-500 mb-4 group-hover:scale-110 transition-transform duration-300"></i>
+                        <h3 class="text-xl font-bold text-white mb-2">Banned List</h3>
+                        <p class="text-sm text-gray-400">Upload and view banned usernames from text file.</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BONUS HUNT PAGE -->
+        <section id="bonushunt" class="hidden-section space-y-6">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-3xl font-display font-bold text-white border-l-4 border-gold pl-4 flex items-center gap-3">
+                        <i class="fas fa-gem text-gold"></i>
+                        BONUS HUNT
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1 ml-5">Track your slot bonus openings</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="resetHunt()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 px-4 py-2 rounded-lg transition-colors border border-red-600/30 text-sm">
+                        <i class="fas fa-trash mr-2"></i>Reset Hunt
+                    </button>
+                    <button onclick="exportHunt()" class="bg-green-600/20 hover:bg-green-600/30 text-green-400 px-4 py-2 rounded-lg transition-colors border border-green-600/30 text-sm">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hunt Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="glass-panel rounded-xl p-4 border border-gold/30">
+                    <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Cost</div>
+                    <div class="text-2xl font-bold text-white" id="total-cost">$0.00</div>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold/30">
+                    <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Won</div>
+                    <div class="text-2xl font-bold text-gold" id="total-won">$0.00</div>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold/30">
+                    <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Profit/Loss</div>
+                    <div class="text-2xl font-bold" id="total-profit">$0.00</div>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold/30">
+                    <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Bonuses</div>
+                    <div class="text-2xl font-bold text-white"><span id="opened-count">0</span> / <span id="total-count">0</span></div>
+                    <div class="w-full bg-gray-800 rounded-full h-2 mt-2">
+                        <div class="hunt-progress h-2 rounded-full" id="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Add Bonus Form -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="glass-panel rounded-xl p-6 border border-gold/20">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-plus-circle text-gold"></i>
+                            Add Bonus
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Slot Name</label>
+                                <input type="text" id="slot-name" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all" placeholder="e.g. Gates of Olympus">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Provider</label>
+                                <select id="slot-provider" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:border-gold outline-none">
+                                    <option value="pragmatic">Pragmatic Play</option>
+                                    <option value="hacksaw">Hacksaw Gaming</option>
+                                    <option value="relax">Relax Gaming</option>
+                                    <option value="nolimit">Nolimit City</option>
+                                    <option value="push">Push Gaming</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Bonus Cost ($)</label>
+                                <input type="number" id="bonus-cost" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all" placeholder="0.00" step="0.01">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Bonus Win ($) <span class="text-gray-500">(leave empty if not opened)</span></label>
+                                <input type="number" id="bonus-win" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-all" placeholder="0.00" step="0.01">
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-2">
+                                <input type="checkbox" id="is-opened" class="w-4 h-4 rounded border-gray-700 bg-black/50 text-gold focus:ring-gold">
+                                <label for="is-opened" class="text-sm text-gray-300">Already opened</label>
+                            </div>
+
+                            <button onclick="addBonus()" class="w-full bg-gold hover:bg-yellow-400 text-black font-bold py-3 rounded-lg transition-all transform hover:scale-[1.02] active:scale-95 shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                                <i class="fas fa-plus mr-2"></i>ADD BONUS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="glass-panel rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4">Provider Breakdown</h3>
+                        <div id="provider-stats" class="space-y-2 text-sm">
+                            <div class="flex justify-between text-gray-400">
+                                <span>No bonuses added yet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonus List -->
+                <div class="lg:col-span-2">
+                    <div class="glass-panel rounded-xl p-6 min-h-[600px]">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-800">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fas fa-list text-gold"></i>
+                                Your Bonuses
+                            </h3>
+                            <div class="flex gap-2">
+                                <select id="filter-provider" onchange="filterBonuses()" class="bg-black/50 border border-gray-700 rounded px-3 py-1 text-sm text-white focus:border-gold outline-none">
+                                    <option value="all">All Providers</option>
+                                    <option value="pragmatic">Pragmatic</option>
+                                    <option value="hacksaw">Hacksaw</option>
+                                    <option value="relax">Relax</option>
+                                    <option value="nolimit">Nolimit</option>
+                                    <option value="push">Push</option>
+                                </select>
+                                <select id="filter-status" onchange="filterBonuses()" class="bg-black/50 border border-gray-700 rounded px-3 py-1 text-sm text-white focus:border-gold outline-none">
+                                    <option value="all">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="opened">Opened</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="bonus-list" class="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                            <div class="text-center text-gray-600 py-12">
+                                <i class="fas fa-gem text-6xl mb-4 opacity-20"></i>
+                                <p>No bonuses added yet</p>
+                                <p class="text-sm mt-2">Add your first bonus to start tracking</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BATTLE GRID (Minigame) -->
+        <section id="minigame" class="hidden-section space-y-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-display font-bold text-white border-l-4 border-twitch pl-4">BATTLE GRID</h2>
+                <div class="flex gap-4">
+                     <div class="text-right">
+                        <div class="text-xs text-gray-500 uppercase">Status</div>
+                        <div id="minigame-status" class="text-twitch font-bold">WAITING</div>
+                     </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass-panel rounded-xl p-6 minigame-input">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-paste text-twitch"></i>
+                            Quick Load Names
+                        </h3>
+                        <p class="text-xs text-gray-400 mb-3">Paste a list of names (one per line or comma-separated) to auto-fill the grid</p>
+                        <textarea id="minigame-paste-input" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-gray-300 focus:border-twitch focus:ring-1 focus:ring-twitch outline-none transition-all font-mono resize-none text-sm" rows="6" placeholder="PlayerOne&#10;PlayerTwo&#10;PlayerThree..."></textarea>
+                        <div class="mt-3 flex gap-2">
+                            <button onclick="pasteNamesToGrid()" class="flex-1 bg-twitch hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg transition-all text-sm">
+                                <i class="fas fa-upload mr-2"></i>LOAD TO GRID
+                            </button>
+                            <button onclick="clearMinigamePaste()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-2 px-4 rounded-lg transition-all text-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="paste-status" class="mt-2 text-xs text-gray-500 h-4"></div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 border-b border-gray-800 pb-2">Configuration</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Grid Size</label>
+                                <select id="grid-size" class="w-full bg-black/50 border border-gray-700 rounded p-2 text-white focus:border-twitch outline-none" onchange="initMinigameGrid()">
+                                    <option value="25">5 x 5 (25 slots)</option>
+                                    <option value="64">8 x 8 (64 slots)</option>
+                                    <option value="100">10 x 10 (100 slots)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Or Auto-Fill Empty</label>
+                                <div class="flex gap-2">
+                                    <button onclick="autoFillNames()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded transition-colors py-2">
+                                        <i class="fas fa-magic mr-2"></i>Fill with Player 1, 2, 3...
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Roll Speed</label>
+                                <input type="range" id="roll-speed" min="50" max="500" value="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-twitch">
+                                <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                                    <span>Fast</span>
+                                    <span>Slow</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6 flex flex-col gap-4">
+                        <button id="start-minigame-btn" onclick="startMinigame()" class="w-full py-4 bg-twitch hover:bg-purple-600 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(145,70,255,0.3)] transition-all transform hover:scale-[1.02] active:scale-95">
+                            <i class="fas fa-play mr-2"></i> START BATTLE
+                        </button>
+                        <button onclick="resetMinigame()" class="w-full py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold rounded-lg transition-colors">
+                            <i class="fas fa-undo mr-2"></i> RESET BOARD
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="glass-panel rounded-xl p-4 md:p-8 relative">
+                        <div id="minigame-grid" class="grid gap-2 w-full mx-auto aspect-square max-w-[600px]">
+                        </div>
+                        
+                        <div id="minigame-winner-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-xl z-20 hidden flex flex-col items-center justify-center">
+                            <div class="text-twitch font-bold tracking-widest mb-2 animate-bounce">CHAMPION</div>
+                            <h2 id="minigame-winner-name" class="text-5xl md:text-7xl font-display font-black text-white mb-8 text-center break-all px-4 neon-text-purple">NAME</h2>
+                            <button onclick="resetMinigame()" class="bg-white text-black font-bold py-3 px-8 rounded-full hover:scale-105 transition-transform">PLAY AGAIN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLOT PICKER -->
+        <section id="slotpicker" class="hidden-section space-y-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-display font-bold text-white border-l-4 border-yellow-500 pl-4">SLOT PICKER</h2>
+                <button onclick="resetSlotPicker()" class="text-sm text-gray-400 hover:text-white transition-colors"><i class="fas fa-redo mr-2"></i>Reset</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="glass-panel rounded-xl p-6 h-full flex flex-col border border-yellow-500/20">
+                        <label class="block text-sm font-bold text-yellow-500 mb-2 uppercase tracking-wider"><i class="fas fa-users mr-2"></i>Contestants</label>
+                        <p class="text-xs text-gray-500 mb-4">Enter names for the slot machine (one per line)</p>
+                        <textarea id="slot-input" class="flex-grow w-full bg-black/50 border border-gray-700 rounded-lg p-4 text-gray-300 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all font-mono resize-none" rows="12" placeholder="UserOne&#10;UserTwo&#10;UserThree..."></textarea>
+                        <div class="mt-4 pt-4 border-t border-gray-800">
+                            <div class="flex justify-between items-center mb-3">
+                                <span id="slot-count" class="text-sm text-gray-400">0 Names</span>
+                            </div>
+                            <button onclick="loadSlotNames()" class="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded transition-colors">
+                                <i class="fas fa-sync mr-2"></i>LOAD NAMES
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 flex flex-col">
+                    <div class="glass-panel rounded-xl p-8 flex-grow relative overflow-hidden flex flex-col items-center justify-center min-h-[500px] bg-gradient-to-b from-gray-900 to-black">
+                        <!-- Decorative lights -->
+                        <div class="absolute top-4 left-4 w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                        <div class="absolute top-4 right-4 w-3 h-3 rounded-full bg-red-500 animate-pulse delay-75"></div>
+                        <div class="absolute bottom-4 left-4 w-3 h-3 rounded-full bg-red-500 animate-pulse delay-150"></div>
+                        <div class="absolute bottom-4 right-4 w-3 h-3 rounded-full bg-red-500 animate-pulse delay-200"></div>
+
+                        <!-- Slot Machine Display -->
+                        <div class="relative w-full max-w-lg">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 rounded-lg blur opacity-25"></div>
+                            <div class="slot-machine-display relative rounded-lg p-8 text-center">
+                                <div class="text-yellow-500 text-xs font-bold tracking-[0.3em] mb-4">ROLLING</div>
+                                <div id="slot-display" class="text-5xl md:text-7xl font-display font-black text-white mb-6 h-24 flex items-center justify-center overflow-hidden">
+                                    <span class="text-gray-600">READY</span>
+                                </div>
+                                <div class="h-1 w-full bg-gradient-to-r from-transparent via-yellow-500 to-transparent opacity-50"></div>
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <div class="mt-12 flex gap-4">
+                            <button id="slot-spin-btn" onclick="spinSlotMachine()" class="group relative px-12 py-6 bg-gradient-to-b from-red-600 to-red-800 rounded-full font-display font-bold text-2xl text-white shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:shadow-[0_0_50px_rgba(220,38,38,0.8)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span class="absolute inset-0 rounded-full bg-gradient-to-b from-white/20 to-transparent"></span>
+                                <i class="fas fa-play mr-3"></i>SPIN
+                            </button>
+                        </div>
+
+                        <div id="slot-winner-announcement" class="hidden mt-8 text-center animate-bounce">
+                            <div class="text-yellow-400 text-lg font-bold tracking-widest">WINNER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MY CRYPTO PAGE -->
+        <section id="support" class="hidden-section space-y-8">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-display font-bold text-white mb-2">MY <span class="text-neonBlue" style="color: #00d4ff;">CRYPTO</span></h2>
+                <p class="text-gray-400">Wallet addresses & Social Links</p>
+            </div>
+
+            <!-- Crypto Wallets -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- Litecoin -->
+                <div class="crypto-card glass-panel rounded-xl p-6 border-l-4 border-ltc">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-ltc/20 flex items-center justify-center">
+                                <i class="fab fa-bitcoin text-2xl text-ltc"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Litecoin</h3>
+                                <span class="text-xs text-ltc">LTC</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('ltc1q2r4cavrgfszwddzjkl9ckf6pehs79r5zjwnxwr', 'ltc-copy')" id="ltc-copy" class="copy-btn px-4 py-2 rounded-lg border border-ltc/30 text-ltc text-sm font-bold">
+                            <i class="fas fa-copy mr-2"></i>COPY
+                        </button>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 font-mono text-xs text-gray-300 break-all">
+                        ltc1q2r4cavrgfszwddzjkl9ckf6pehs79r5zjwnxwr
+                    </div>
+                </div>
+
+                <!-- Dogecoin -->
+                <div class="crypto-card glass-panel rounded-xl p-6 border-l-4 border-doge">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-doge/20 flex items-center justify-center">
+                                <i class="fas fa-dog text-2xl text-doge"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Dogecoin</h3>
+                                <span class="text-xs text-doge">DOGE</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('DEAWQRnm7ptSX6BgSvEaTZsdtzZLZQFmi2', 'doge-copy')" id="doge-copy" class="copy-btn px-4 py-2 rounded-lg border border-doge/30 text-doge text-sm font-bold">
+                            <i class="fas fa-copy mr-2"></i>COPY
+                        </button>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 font-mono text-xs text-gray-300 break-all">
+                        DEAWQRnm7ptSX6BgSvEaTZsdtzZLZQFmi2
+                    </div>
+                </div>
+
+                <!-- USDT ERC20 -->
+                <div class="crypto-card glass-panel rounded-xl p-6 border-l-4 border-usdt">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-usdt/20 flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-2xl text-usdt"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">USDT</h3>
+                                <span class="text-xs text-usdt">ERC20</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('0x91659Acb20bf0c459a32d29eC45206Be8Aa4CBAC', 'usdt-copy')" id="usdt-copy" class="copy-btn px-4 py-2 rounded-lg border border-usdt/30 text-usdt text-sm font-bold">
+                            <i class="fas fa-copy mr-2"></i>COPY
+                        </button>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 font-mono text-xs text-gray-300 break-all">
+                        0x91659Acb20bf0c459a32d29eC45206Be8Aa4CBAC
+                    </div>
+                </div>
+
+                <!-- Ethereum -->
+                <div class="crypto-card glass-panel rounded-xl p-6 border-l-4 border-eth">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-eth/20 flex items-center justify-center">
+                                <i class="fab fa-ethereum text-2xl text-eth"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Ethereum</h3>
+                                <span class="text-xs text-eth">ETH</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('0x91659Acb20bf0c459a32d29eC45206Be8Aa4CBAC', 'eth-copy')" id="eth-copy" class="copy-btn px-4 py-2 rounded-lg border border-eth/30 text-eth text-sm font-bold">
+                            <i class="fas fa-copy mr-2"></i>COPY
+                        </button>
+                    </div>
+                    <div class="bg-black/50 rounded-lg p-3 font-mono text-xs text-gray-300 break-all">
+                        0x91659Acb20bf0c459a32d29eC45206Be8Aa4CBAC
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Links -->
+            <div class="glass-panel rounded-xl p-8 max-w-4xl mx-auto mt-8">
+                <h3 class="text-2xl font-display font-bold text-white mb-6 text-center">FOLLOW ME</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <a href="https://kick.com/kunziebankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-kick group">
+                        <div class="w-10 h-10 rounded-full bg-kick/20 flex items-center justify-center group-hover:bg-kick transition-colors">
+                            <i class="fas fa-broadcast-tower text-kick group-hover:text-black"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Kick</div>
+                            <div class="text-xs text-gray-500">@kunziebankz</div>
+                        </div>
+                    </a>
+
+                    <a href="https://kick.com/kunziebankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-twitch group">
+                        <div class="w-10 h-10 rounded-full bg-twitch/20 flex items-center justify-center group-hover:bg-twitch transition-colors">
+                            <i class="fab fa-twitch text-twitch group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Twitch</div>
+                            <div class="text-xs text-gray-500">@kunziebankz</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/@kunziebankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-red-600 group">
+                        <div class="w-10 h-10 rounded-full bg-red-600/20 flex items-center justify-center group-hover:bg-red-600 transition-colors">
+                            <i class="fab fa-youtube text-red-600 group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">YouTube</div>
+                            <div class="text-xs text-gray-500">@kunziebankz</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.tiktok.com/@kunziebankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-pink-500 group">
+                        <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center group-hover:bg-pink-500 transition-colors">
+                            <i class="fab fa-tiktok text-pink-500 group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">TikTok</div>
+                            <div class="text-xs text-gray-500">@kunziebankz</div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.instagram.com/kunziebankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-pink-600 group">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500/20 flex items-center justify-center group-hover:from-purple-600 group-hover:to-pink-500 transition-colors">
+                            <i class="fab fa-instagram text-pink-600 group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Instagram</div>
+                            <div class="text-xs text-gray-500">@kunziebankz</div>
+                        </div>
+                    </a>
+
+                    <a href="https://discord.gg/KunzieBankz" target="_blank" class="social-link glass-panel p-4 rounded-lg flex items-center gap-3 hover:border-indigo-500 group">
+                        <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center group-hover:bg-indigo-500 transition-colors">
+                            <i class="fab fa-discord text-indigo-500 group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-bold">Discord</div>
+                            <div class="text-xs text-gray-500">Join Server</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNED LIST PAGE -->
+        <section id="banned" class="hidden-section space-y-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-display font-bold text-red-500 border-l-4 border-red-500 pl-4"><i class="fas fa-ban mr-3"></i>BANNED USERS</h2>
+                <div class="flex gap-2">
+                    <label for="banned-file-input" class="cursor-pointer bg-red-600/20 hover:bg-red-600/30 text-red-400 px-4 py-2 rounded-lg transition-colors border border-red-600/30">
+                        <i class="fas fa-upload mr-2"></i>Upload List
+                    </label>
+                    <input type="file" id="banned-file-input" accept=".txt" class="hidden" onchange="handleBannedFileUpload(event)">
+                    <button onclick="clearBannedList()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="glass-panel rounded-xl p-6 border border-red-500/20">
+                        <h3 class="text-lg font-bold text-white mb-4">Upload Banned List</h3>
+                        <p class="text-sm text-gray-400 mb-4">Upload a .txt file containing banned usernames (one per line).</p>
+                        
+                        <div class="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center hover:border-red-500/50 transition-colors" onclick="document.getElementById('banned-file-input').click()">
+                            <i class="fas fa-file-upload text-4xl text-gray-600 mb-3"></i>
+                            <p class="text-sm text-gray-500">Click to upload or drag & drop</p>
+                            <p class="text-xs text-gray-600 mt-1">.txt files only</p>
+                        </div>
+
+                        <div class="mt-6">
+                            <h4 class="text-sm font-bold text-gray-300 mb-2">Stats</h4>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">Total Banned:</span>
+                                <span id="banned-count" class="text-red-400 font-bold">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm mt-1">
+                                <span class="text-gray-500">Last Updated:</span>
+                                <span id="banned-last-updated" class="text-gray-400">Never</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-6 mt-4">
+                        <h3 class="text-lg font-bold text-white mb-4">Manual Entry</h3>
+                        <textarea id="manual-banned-input" class="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-gray-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all font-mono text-sm resize-none" rows="4" placeholder="Enter usernames..."></textarea>
+                        <button onclick="addManualBanned()" class="w-full mt-3 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-600/30 py-2 rounded-lg transition-colors text-sm font-bold">
+                            ADD TO LIST
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div class="glass-panel rounded-xl p-6 min-h-[600px]">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-800">
+                            <h3 class="text-lg font-bold text-white">Banned Usernames</h3>
+                            <div class="flex gap-2">
+                                <input type="text" id="banned-search" placeholder="Search..." class="bg-black/50 border border-gray-700 rounded px-3 py-1 text-sm text-white focus:border-red-500 outline-none" onkeyup="searchBanned()">
+                            </div>
+                        </div>
+                        
+                        <div id="banned-list-container" class="space-y-2 max-h-[500px] overflow-y-auto pr-2">
+                            <div class="text-center text-gray-600 py-12">
+                                <i class="fas fa-shield-alt text-6xl mb-4 opacity-20"></i>
+                                <p>No banned users loaded</p>
+                                <p class="text-sm mt-2">Upload a .txt file to populate the list</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+            <!-- VIP SUBSCRIPTIONS PAGE -->
+        <section id="vip" class="hidden-section space-y-8">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-display font-bold text-white mb-2">VIP <span class="text-indigo-500">SUBSCRIPTIONS</span></h2>
+                <p class="text-gray-400">Support the stream and get exclusive perks</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Discord VIP -->
+                <a href="https://mee6.xyz/en/m/kunziebankz" target="_blank" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 p-8 transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(99,102,241,0.5)]">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoMnY0em0wLTZ2LTRoLTJ2NGgyem0tNiA2aC00djJoNHYtMnptMC02di00aC00djRoNHptLTYgNmgtNHYyaDR2LTJ6mTAtNnYtNGgtNHY0aDR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                                <i class="fab fa-discord text-3xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-bold text-white">Discord VIP</h3>
+                                <span class="text-indigo-200 text-sm">MEE6 Subscription</span>
+                            </div>
+                        </div>
+                        <p class="text-indigo-100 mb-6">Get exclusive Discord perks, custom commands, and VIP recognition. Support the community and stand out!</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-white font-bold">Subscribe Now</span>
+                            <i class="fas fa-arrow-right text-white group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- StreamElements Tip -->
+                <a href="https://streamelements.com/kunziebankz/tip" target="_blank" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-600 to-emerald-700 p-8 transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]">
+                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzAgMjBjLTUuNTIzIDAtMTAgNC40NzctMTAgMTBzNC40NzcgMTAgMTAgMTAgMTAtNC40NzcgMTAtMTAtNC40NzctMTAtMTAtMTB6bTAgMThjLTQuNDE4IDAtOC0zLjU4Mi04LThzMy41ODItOCA4LTggOCAzLjU4MiA4IDgtMy41ODIgOC04IDh6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                                <i class="fas fa-gift text-3xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-bold text-white">Send a Tip</h3>
+                                <span class="text-emerald-200 text-sm">StreamElements</span>
+                            </div>
+                        </div>
+                        <p class="text-emerald-100 mb-6">Support the stream directly with a tip. Every contribution helps improve the content and keeps the stream going!</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-white font-bold">Donate Now</span>
+                            <i class="fas fa-arrow-right text-white group-hover:translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="glass-panel rounded-xl p-8 max-w-4xl mx-auto mt-8">
+                <h3 class="text-2xl font-display font-bold text-white mb-4 text-center">Why Subscribe?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-crown text-indigo-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-1">VIP Status</h4>
+                        <p class="text-gray-400 text-sm">Exclusive role and recognition in Discord</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-star text-purple-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-1">Special Perks</h4>
+                        <p class="text-gray-400 text-sm">Access to exclusive channels and commands</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-heart text-pink-400 text-xl"></i>
+                        </div>
+                        <h4 class="text-white font-bold mb-1">Support</h4>
+                        <p class="text-gray-400 text-sm">Directly help grow the community</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+</main>
+
+    <footer class="border-t border-white/5 bg-black py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-600 text-sm font-display">&copy; 2023 KUNZIEBANKZ. ALL RIGHTS RESERVED.</p>
+            <div class="flex justify-center gap-4 mt-2">
+                <a href="https://kick.com/kunziebankz" target="_blank" class="text-gray-600 hover:text-kick transition-colors"><i class="fas fa-broadcast-tower"></i></a>
+                <a href="https://www.youtube.com/@kunziebankz" target="_blank" class="text-gray-600 hover:text-red-600 transition-colors"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@kunziebankz" target="_blank" class="text-gray-600 hover:text-pink-500 transition-colors"><i class="fab fa-tiktok"></i></a>
+                <a href="https://discord.gg/KunzieBankz" target="_blank" class="text-gray-600 hover:text-indigo-500 transition-colors"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let audioCtx;
+        let isMuted = false;
+        let audioInitialized = false;
+
+        function initAudio() {
+            if (audioInitialized) return;
+            
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                audioInitialized = true;
+                document.getElementById('audio-warning').classList.add('hidden');
+            } catch (e) {
+                console.error("Audio not supported");
+            }
+        }
+
+        function playTick(pitch = 800) {
+            if (isMuted || !audioCtx) return;
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            const randomPitch = pitch + (Math.random() * 100 - 50);
+            osc.frequency.setValueAtTime(randomPitch, audioCtx.currentTime);
+            osc.type = 'sine';
+            
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playWinnerSound() {
+            if (isMuted || !audioCtx) return;
+            
+            const frequencies = [523.25, 659.25, 783.99, 1046.50];
+            const now = audioCtx.currentTime;
+            
+            frequencies.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.frequency.setValueAtTime(freq, now);
+                osc.type = i === 0 ? 'sawtooth' : 'sine';
+                
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.15, now + 0.1 + (i * 0.05));
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+                
+                osc.start(now);
+                osc.stop(now + 1.5);
+            });
+
+            const bassOsc = audioCtx.createOscillator();
+            const bassGain = audioCtx.createGain();
+            bassOsc.connect(bassGain);
+            bassGain.connect(audioCtx.destination);
+            
+            bassOsc.frequency.setValueAtTime(100, now);
+            bassOsc.frequency.exponentialRampToValueAtTime(50, now + 0.5);
+            bassOsc.type = 'sawtooth';
+            
+            bassGain.gain.setValueAtTime(0.2, now);
+            bassGain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            
+            bassOsc.start(now);
+            bassOsc.stop(now + 0.5);
+        }
+
+        function playSlotSound() {
+            if (isMuted || !audioCtx) return;
+            
+            const now = audioCtx.currentTime;
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.frequency.setValueAtTime(200, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+            osc.type = 'square';
+            
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            
+            osc.start(now);
+            osc.stop(now + 0.05);
+        }
+
+        function playSlotStopSound() {
+            if (isMuted || !audioCtx) return;
+            
+            const now = audioCtx.currentTime;
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.frequency.setValueAtTime(150, now);
+            osc.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+            osc.type = 'sawtooth';
+            
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            
+            osc.start(now);
+            osc.stop(now + 0.15);
+        }
+
+        function playClick() {
+            if (isMuted || !audioCtx) return;
+            
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+            osc.type = 'square';
+            
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function playSuccessSound() {
+            if (isMuted || !audioCtx) return;
+            
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
+            osc.type = 'sine';
+            
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+            
+            osc.start(now);
+            osc.stop(now + 0.3);
+        }
+
+        function playCoinSound() {
+            if (isMuted || !audioCtx) return;
+            
+            const now = audioCtx.currentTime;
+            
+            // High pitch coin sound
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.frequency.setValueAtTime(1200, now);
+            osc.frequency.exponentialRampToValueAtTime(1800, now + 0.1);
+            osc.type = 'sine';
+            
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+            
+            osc.start(now);
+            osc.stop(now + 0.15);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('mute-icon');
+            const btn = document.getElementById('mute-btn');
+            
+            if (isMuted) {
+                icon.className = 'fas fa-volume-mute text-gray-500 text-xl';
+                btn.classList.add('opacity-50');
+            } else {
+                icon.className = 'fas fa-volume-up text-kick text-xl';
+                btn.classList.remove('opacity-50');
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }
+        }
+
+        document.addEventListener('click', () => {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }, { once: true });
+
+        setTimeout(() => {
+            if (!audioInitialized) {
+                document.getElementById('audio-warning').classList.remove('hidden');
+            }
+        }, 1000);
+
+        let currentTab = 'dashboard';
+        let timerInterval;
+        let timerRunning = false;
+        let seconds = 0;
+
+        function switchTab(tabId) {
+            playClick();
+            currentTab = tabId;
+            
+            document.querySelectorAll('main > section').forEach(el => {
+                el.classList.add('hidden-section');
+            });
+            
+            const target = document.getElementById(tabId);
+            target.classList.remove('hidden-section');
+            
+            target.classList.remove('animate-fade-in');
+            void target.offsetWidth;
+            target.classList.add('animate-fade-in');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'bg-white/10', 'border-l-2', 'border-neonBlue', 'border-red-500', 'border-gold');
+                btn.classList.add('text-gray-300');
+            });
+            
+            const tabMap = {
+                'dashboard': 0,
+                'bonushunt': 1,
+                'minigame': 2,
+                'slotpicker': 3,
+                'support': 4,
+                'banned': 5
+            };
+            
+            const activeIndex = tabMap[tabId];
+            if(activeIndex !== undefined) {
+                const btns = document.querySelectorAll('.nav-btn');
+                btns[activeIndex].classList.remove('text-gray-300');
+                btns[activeIndex].classList.add('text-white', 'bg-white/10');
+                
+                if(tabId === 'banned') {
+                    btns[activeIndex].classList.add('border-l-2', 'border-red-500');
+                } else if(tabId === 'bonushunt') {
+                    btns[activeIndex].classList.add('border-l-2', 'border-gold');
+                } else {
+                    btns[activeIndex].classList.add('border-l-2', 'border-neonBlue');
+                }
+            }
+        }
+
+        function toggleTimer() {
+            playClick();
+            const btn = document.getElementById('timer-btn');
+            if (timerRunning) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                btn.textContent = "START TIMER";
+                btn.classList.remove('bg-red-500/20', 'text-red-500');
+                btn.classList.add('bg-white/10');
+            } else {
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
+                    const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+                    const secs = (seconds % 60).toString().padStart(2, '0');
+                    document.getElementById('stream-timer').textContent = `${hrs}:${mins}:${secs}`;
+                }, 1000);
+                timerRunning = true;
+                btn.textContent = "STOP TIMER";
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-red-500/20', 'text-red-500');
+            }
+        }
+
+        // BONUS HUNT LOGIC
+        let bonuses = [];
+        let huntStats = {
+            totalCost: 0,
+            totalWon: 0,
+            opened: 0
+        };
+
+        function addBonus() {
+            playCoinSound();
+            
+            const name = document.getElementById('slot-name').value.trim();
+            const provider = document.getElementById('slot-provider').value;
+            const cost = parseFloat(document.getElementById('bonus-cost').value) || 0;
+            const win = parseFloat(document.getElementById('bonus-win').value) || 0;
+            const isOpened = document.getElementById('is-opened').checked;
+
+            if(!name) {
+                alert('Please enter a slot name');
+                return;
+            }
+
+            const bonus = {
+                id: Date.now(),
+                name: name,
+                provider: provider,
+                cost: cost,
+                win: isOpened ? win : 0,
+                isOpened: isOpened,
+                timestamp: new Date().toLocaleString()
+            };
+
+            bonuses.push(bonus);
+            
+            // Clear form
+            document.getElementById('slot-name').value = '';
+            document.getElementById('bonus-cost').value = '';
+            document.getElementById('bonus-win').value = '';
+            document.getElementById('is-opened').checked = false;
+
+            updateHuntDisplay();
+            updateProviderStats();
+        }
+
+        function toggleBonusOpened(id) {
+            playClick();
+            const bonus = bonuses.find(b => b.id === id);
+            if(bonus) {
+                bonus.isOpened = !bonus.isOpened;
+                if(!bonus.isOpened) {
+                    bonus.win = 0;
+                }
+                updateHuntDisplay();
+                updateProviderStats();
+            }
+        }
+
+        function updateBonusWin(id, winAmount) {
+            const bonus = bonuses.find(b => b.id === id);
+            if(bonus) {
+                bonus.win = parseFloat(winAmount) || 0;
+                updateHuntDisplay();
+                updateProviderStats();
+            }
+        }
+
+        function deleteBonus(id) {
+            playClick();
+            if(confirm('Delete this bonus?')) {
+                bonuses = bonuses.filter(b => b.id !== id);
+                updateHuntDisplay();
+                updateProviderStats();
+            }
+        }
+
+        function updateHuntDisplay() {
+            const list = document.getElementById('bonus-list');
+            
+            // Calculate stats
+            huntStats.totalCost = bonuses.reduce((sum, b) => sum + b.cost, 0);
+            huntStats.totalWon = bonuses.reduce((sum, b) => sum + (b.isOpened ? b.win : 0), 0);
+            huntStats.opened = bonuses.filter(b => b.isOpened).length;
+
+            // Update stats display
+            document.getElementById('total-cost').textContent = '$' + huntStats.totalCost.toFixed(2);
+            document.getElementById('total-won').textContent = '$' + huntStats.totalWon.toFixed(2);
+            
+            const profit = huntStats.totalWon - huntStats.totalCost;
+            const profitEl = document.getElementById('total-profit');
+            profitEl.textContent = (profit >= 0 ? '+' : '') + '$' + profit.toFixed(2);
+            profitEl.className = 'text-2xl font-bold ' + (profit >= 0 ? 'profit-positive' : 'profit-negative');
+
+            document.getElementById('opened-count').textContent = huntStats.opened;
+            document.getElementById('total-count').textContent = bonuses.length;
+            
+            const progress = bonuses.length > 0 ? (huntStats.opened / bonuses.length) * 100 : 0;
+            document.getElementById('progress-bar').style.width = progress + '%';
+
+            // Filter bonuses
+            const providerFilter = document.getElementById('filter-provider').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            
+            let filtered = bonuses;
+            if(providerFilter !== 'all') {
+                filtered = filtered.filter(b => b.provider === providerFilter);
+            }
+            if(statusFilter !== 'all') {
+                filtered = filtered.filter(b => statusFilter === 'opened' ? b.isOpened : !b.isOpened);
+            }
+
+            // Render list
+            if(filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center text-gray-600 py-12">
+                        <i class="fas fa-gem text-6xl mb-4 opacity-20"></i>
+                        <p>${bonuses.length === 0 ? 'No bonuses added yet' : 'No bonuses match filters'}</p>
+                        <p class="text-sm mt-2">${bonuses.length === 0 ? 'Add your first bonus to start tracking' : 'Try different filter settings'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = filtered.map(bonus => {
+                const profit = bonus.win - bonus.cost;
+                const profitClass = profit >= 0 ? 'profit-positive' : 'profit-negative';
+                const providerColors = {
+                    pragmatic: 'pragmatic',
+                    hacksaw: 'hacksaw',
+                    relax: 'relax',
+                    nolimit: 'nolimit',
+                    push: 'push',
+                    other: 'other'
+                };
+                
+                return `
+                    <div class="bonus-card glass-panel rounded-lg p-4 ${bonus.isOpened ? 'opened' : ''}" data-provider="${bonus.provider}" data-status="${bonus.isOpened ? 'opened' : 'pending'}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 flex-1">
+                                <span class="provider-badge provider-${providerColors[bonus.provider]}">${bonus.provider}</span>
+                                <div>
+                                    <div class="font-bold text-white">${escapeHtml(bonus.name)}</div>
+                                    <div class="text-xs text-gray-500">Cost: $${bonus.cost.toFixed(2)}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3">
+                                ${bonus.isOpened ? `
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">Won</div>
+                                        <div class="font-bold ${profitClass}">$${bonus.win.toFixed(2)}</div>
+                                        <div class="text-xs ${profitClass}">${profit >= 0 ? '+' : ''}$${profit.toFixed(2)}</div>
+                                    </div>
+                                ` : `
+                                    <div class="text-right text-gray-500">
+                                        <div class="text-xs">Pending</div>
+                                    </div>
+                                `}
+                                
+                                <div class="flex flex-col gap-1">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" ${bonus.isOpened ? 'checked' : ''} onchange="toggleBonusOpened(${bonus.id})" class="w-4 h-4 rounded border-gray-700 bg-black/50 text-gold focus:ring-gold">
+                                        <span class="text-xs text-gray-400">Opened</span>
+                                    </label>
+                                    ${bonus.isOpened ? `
+                                        <input type="number" value="${bonus.win}" onchange="updateBonusWin(${bonus.id}, this.value)" class="w-20 bg-black/50 border border-gray-700 rounded px-2 py-1 text-xs text-white focus:border-gold outline-none" placeholder="Win $" step="0.01">
+                                    ` : ''}
+                                </div>
+                                
+                                <button onclick="deleteBonus(${bonus.id})" class="text-red-500/50 hover:text-red-500 transition-colors ml-2">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateProviderStats() {
+            const stats = {};
+            const providers = {
+                pragmatic: 'Pragmatic',
+                hacksaw: 'Hacksaw',
+                relax: 'Relax',
+                nolimit: 'Nolimit',
+                push: 'Push',
+                other: 'Other'
+            };
+
+            bonuses.forEach(b => {
+                if(!stats[b.provider]) {
+                    stats[b.provider] = { count: 0, opened: 0, cost: 0, won: 0 };
+                }
+                stats[b.provider].count++;
+                stats[b.provider].cost += b.cost;
+                if(b.isOpened) {
+                    stats[b.provider].opened++;
+                    stats[b.provider].won += b.win;
+                }
+            });
+
+            const container = document.getElementById('provider-stats');
+            
+            if(Object.keys(stats).length === 0) {
+                container.innerHTML = '<div class="text-gray-500 text-sm">No bonuses added yet</div>';
+                return;
+            }
+
+            container.innerHTML = Object.entries(stats).map(([key, data]) => {
+                const profit = data.won - data.cost;
+                const profitClass = profit >= 0 ? 'text-green-400' : 'text-red-400';
+                return `
+                    <div class="flex justify-between items-center py-2 border-b border-gray-800 last:border-0">
+                        <div>
+                            <span class="provider-badge provider-${key} text-xs">${providers[key]}</span>
+                            <span class="text-gray-400 text-xs ml-2">${data.opened}/${data.count} opened</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs ${profitClass}">${profit >= 0 ? '+' : ''}$${profit.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterBonuses() {
+            updateHuntDisplay();
+        }
+
+        function resetHunt() {
+            playClick();
+            if(confirm('Clear all bonuses? This cannot be undone.')) {
+                bonuses = [];
+                updateHuntDisplay();
+                updateProviderStats();
+            }
+        }
+
+        function exportHunt() {
+            playClick();
+            if(bonuses.length === 0) {
+                alert('No bonuses to export');
+                return;
+            }
+
+            const data = {
+                date: new Date().toISOString(),
+                stats: huntStats,
+                bonuses: bonuses
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bonus-hunt-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        let minigamePlayers = [];
+        let isMinigameRunning = false;
+
+        function pasteNamesToGrid() {
+            playClick();
+            const raw = document.getElementById('minigame-paste-input').value;
+            const names = raw.split(/[\n,]+/).map(n => n.trim()).filter(n => n.length > 0);
+            const statusEl = document.getElementById('paste-status');
+            
+            if (names.length === 0) {
+                statusEl.textContent = "No names found!";
+                statusEl.className = "mt-2 text-xs text-red-500 h-4";
+                return;
+            }
+
+            const gridSize = parseInt(document.getElementById('grid-size').value);
+            
+            if (names.length > gridSize) {
+                statusEl.textContent = `Too many names! Grid only has ${gridSize} slots. Using first ${gridSize} names.`;
+                statusEl.className = "mt-2 text-xs text-yellow-500 h-4";
+            } else {
+                statusEl.textContent = `Loaded ${names.length} names into grid`;
+                statusEl.className = "mt-2 text-xs text-green-500 h-4";
+            }
+
+            for (let i = 0; i < gridSize; i++) {
+                if (i < names.length) {
+                    minigamePlayers[i] = names[i];
+                    const el = document.getElementById(`cell-text-${i}`);
+                    if (el) {
+                        el.textContent = names[i];
+                        el.className = 'text-xs md:text-sm font-bold text-white truncate w-full pointer-events-none';
+                    }
+                } else {
+                    minigamePlayers[i] = '';
+                    const el = document.getElementById(`cell-text-${i}`);
+                    if (el) {
+                        el.textContent = 'Empty';
+                        el.className = 'text-xs md:text-sm font-bold text-gray-500 truncate w-full pointer-events-none';
+                    }
+                }
+            }
+
+            playSuccessSound();
+            
+            setTimeout(() => {
+                statusEl.textContent = "";
+            }, 3000);
+        }
+
+        function clearMinigamePaste() {
+            playClick();
+            document.getElementById('minigame-paste-input').value = '';
+            document.getElementById('paste-status').textContent = '';
+        }
+
+        function initMinigameGrid() {
+            playClick();
+            const sizeSelect = document.getElementById('grid-size');
+            const count = parseInt(sizeSelect.value);
+            const grid = document.getElementById('minigame-grid');
+            
+            const cols = Math.sqrt(count);
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            
+            grid.innerHTML = '';
+            minigamePlayers = new Array(count).fill('');
+
+            for (let i = 0; i < count; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell bg-gray-800 rounded border border-gray-700 flex items-center justify-center text-center p-1 cursor-pointer hover:bg-gray-700 transition-colors overflow-hidden';
+                cell.dataset.index = i;
+                
+                const content = document.createElement('span');
+                content.className = 'text-xs md:text-sm font-bold text-gray-500 truncate w-full pointer-events-none';
+                content.textContent = 'Empty';
+                content.id = `cell-text-${i}`;
+                
+                cell.appendChild(content);
+                
+                cell.onclick = () => {
+                    if(isMinigameRunning) return;
+                    playClick();
+                    const name = prompt("Enter Player Name:", minigamePlayers[i] || "");
+                    if (name !== null) {
+                        minigamePlayers[i] = name;
+                        content.textContent = name || 'Empty';
+                        content.className = name ? 'text-xs md:text-sm font-bold text-white truncate w-full pointer-events-none' : 'text-xs md:text-sm font-bold text-gray-500 truncate w-full pointer-events-none';
+                    }
+                };
+                
+                grid.appendChild(cell);
+            }
+        }
+
+        function autoFillNames() {
+            playClick();
+            const count = parseInt(document.getElementById('grid-size').value);
+            
+            for(let i=0; i<count; i++) {
+                if(!minigamePlayers[i]) {
+                    minigamePlayers[i] = `Player ${i+1}`;
+                    const el = document.getElementById(`cell-text-${i}`);
+                    el.textContent = minigamePlayers[i];
+                    el.className = 'text-xs md:text-sm font-bold text-white truncate w-full pointer-events-none';
+                }
+            }
+        }
+
+        function resetMinigame() {
+            playClick();
+            isMinigameRunning = false;
+            document.getElementById('minigame-winner-overlay').classList.add('hidden');
+            document.getElementById('start-minigame-btn').disabled = false;
+            document.getElementById('start-minigame-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+            document.getElementById('minigame-status').textContent = "READY";
+            document.getElementById('minigame-status').className = "text-twitch font-bold";
+            
+            document.querySelectorAll('.grid-cell').forEach(c => {
+                c.classList.remove('active', 'winner');
+            });
+        }
+
+        function startMinigame() {
+            playClick();
+            const activeIndices = minigamePlayers.map((p, i) => p ? i : -1).filter(i => i !== -1);
+            
+            if (activeIndices.length < 2) {
+                alert("Please fill at least 2 slots!");
+                return;
+            }
+
+            isMinigameRunning = true;
+            const btn = document.getElementById('start-minigame-btn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            const status = document.getElementById('minigame-status');
+            status.textContent = "ROLLING...";
+            status.className = "text-kick font-bold animate-pulse";
+
+            const speedInput = document.getElementById('roll-speed');
+            let currentSpeed = parseInt(speedInput.value);
+            let steps = 0;
+            const totalSteps = 20 + Math.floor(Math.random() * 10);
+            let timer;
+
+            function step() {
+                document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('active'));
+
+                const randomActivePos = activeIndices[Math.floor(Math.random() * activeIndices.length)];
+                const cell = document.querySelector(`.grid-cell[data-index="${randomActivePos}"]`);
+                
+                if(cell) {
+                    cell.classList.add('active');
+                }
+
+                playTick(1000 + Math.random() * 200);
+                steps++;
+
+                if (steps < totalSteps) {
+                    if (steps > totalSteps / 2) {
+                        currentSpeed += 20;
+                    }
+                    timer = setTimeout(step, currentSpeed);
+                } else {
+                    finalizeMinigameWinner(activeIndices);
+                }
+            }
+
+            step();
+        }
+
+        function finalizeMinigameWinner(validIndices) {
+            const winnerIndex = validIndices[Math.floor(Math.random() * validIndices.length)];
+            const winnerName = minigamePlayers[winnerIndex];
+            
+            document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('active'));
+            const cell = document.querySelector(`.grid-cell[data-index="${winnerIndex}"]`);
+            cell.classList.add('winner');
+
+            playWinnerSound();
+
+            setTimeout(() => {
+                document.getElementById('minigame-winner-name').textContent = winnerName;
+                document.getElementById('minigame-winner-overlay').classList.remove('hidden');
+                document.getElementById('minigame-status').textContent = "WINNER FOUND";
+                document.getElementById('minigame-status').className = "text-white font-bold";
+                isMinigameRunning = false;
+            }, 500);
+        }
+
+        // SLOT PICKER LOGIC
+        let slotNames = [];
+        let isSpinning = false;
+
+        function loadSlotNames() {
+            playClick();
+            const raw = document.getElementById('slot-input').value;
+            slotNames = raw.split(/[\n,]+/).map(n => n.trim()).filter(n => n.length > 0);
+            document.getElementById('slot-count').textContent = `${slotNames.length} Names`;
+            
+            const countEl = document.getElementById('slot-count');
+            countEl.classList.add('text-yellow-500');
+            setTimeout(() => countEl.classList.remove('text-yellow-500'), 500);
+            
+            if(slotNames.length > 0) {
+                playSuccessSound();
+            }
+        }
+
+        function spinSlotMachine() {
+            loadSlotNames();
+            
+            if(slotNames.length === 0) {
+                alert("Please enter some names first!");
+                return;
+            }
+
+            if(isSpinning) return;
+            isSpinning = true;
+
+            const display = document.getElementById('slot-display');
+            const btn = document.getElementById('slot-spin-btn');
+            const announcement = document.getElementById('slot-winner-announcement');
+            
+            btn.disabled = true;
+            announcement.classList.add('hidden');
+            
+            let spins = 0;
+            const maxSpins = 30 + Math.floor(Math.random() * 10);
+            let speed = 50;
+            
+            function spin() {
+                const randomName = slotNames[Math.floor(Math.random() * slotNames.length)];
+                display.innerHTML = `<span class="animate-pulse">${randomName}</span>`;
+                
+                playSlotSound();
+                spins++;
+                
+                if(spins < maxSpins) {
+                    if(spins > maxSpins - 10) {
+                        speed += 30;
+                    }
+                    setTimeout(spin, speed);
+                } else {
+                    playSlotStopSound();
+                    const winner = slotNames[Math.floor(Math.random() * slotNames.length)];
+                    display.innerHTML = `<span class="text-yellow-400 neon-text-green">${winner}</span>`;
+                    announcement.classList.remove('hidden');
+                    playWinnerSound();
+                    
+                    setTimeout(() => {
+                        isSpinning = false;
+                        btn.disabled = false;
+                    }, 500);
+                }
+            }
+            
+            spin();
+        }
+
+        function resetSlotPicker() {
+            playClick();
+            document.getElementById('slot-input').value = '';
+            slotNames = [];
+            document.getElementById('slot-count').textContent = '0 Names';
+            document.getElementById('slot-display').innerHTML = '<span class="text-gray-600">READY</span>';
+            document.getElementById('slot-winner-announcement').classList.add('hidden');
+            isSpinning = false;
+            document.getElementById('slot-spin-btn').disabled = false;
+        }
+
+        // BANNED LIST LOGIC
+        let bannedUsers = [];
+
+        function handleBannedFileUpload(event) {
+            playClick();
+            const file = event.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const names = text.split(/\r?\n/).map(n => n.trim()).filter(n => n.length > 0);
+                bannedUsers = [...new Set([...bannedUsers, ...names])];
+                updateBannedDisplay();
+                playSuccessSound();
+            };
+            reader.readAsText(file);
+            
+            event.target.value = '';
+        }
+
+        function addManualBanned() {
+            playClick();
+            const input = document.getElementById('manual-banned-input');
+            const names = input.value.split(/[\n,]+/).map(n => n.trim()).filter(n => n.length > 0);
+            
+            if(names.length === 0) return;
+            
+            bannedUsers = [...new Set([...bannedUsers, ...names])];
+            input.value = '';
+            updateBannedDisplay();
+            playSuccessSound();
+        }
+
+        function updateBannedDisplay() {
+            const container = document.getElementById('banned-list-container');
+            const countEl = document.getElementById('banned-count');
+            const dateEl = document.getElementById('banned-last-updated');
+            
+            countEl.textContent = bannedUsers.length;
+            dateEl.textContent = new Date().toLocaleTimeString();
+            
+            if(bannedUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-600 py-12">
+                        <i class="fas fa-shield-alt text-6xl mb-4 opacity-20"></i>
+                        <p>No banned users loaded</p>
+                        <p class="text-sm mt-2">Upload a .txt file to populate the list</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = bannedUsers.map((user, index) => `
+                <div class="banned-user-item flex items-center justify-between bg-red-950/30 border border-red-900/30 rounded-lg px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-user-slash text-red-500/50"></i>
+                        <span class="text-gray-300 font-mono">${escapeHtml(user)}</span>
+                    </div>
+                    <button onclick="removeBannedUser(${index})" class="text-red-500/50 hover:text-red-500 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeBannedUser(index) {
+            playClick();
+            bannedUsers.splice(index, 1);
+            updateBannedDisplay();
+        }
+
+        function clearBannedList() {
+            playClick();
+            if(confirm('Clear all banned users?')) {
+                bannedUsers = [];
+                updateBannedDisplay();
+            }
+        }
+
+        function searchBanned() {
+            const query = document.getElementById('banned-search').value.toLowerCase();
+            const items = document.querySelectorAll('.banned-user-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // CRYPTO COPY FUNCTION
+        function copyToClipboard(text, btnId) {
+            playClick();
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById(btnId);
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check mr-2"></i>COPIED';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initMinigameGrid();
+        });
+
+    </script>
+</body>
+</html>
